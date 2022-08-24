@@ -1,0 +1,189 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: cdp-aws-workload-airflow-template.1
+  title: Workload CDP Airflow Template
+  description: Create a repository containing the definition of a CDP Airflow Workload
+  tags:
+    - aws
+    - cdp
+    - airflow
+    - workload
+spec:
+  owner: agilelab
+  type: workload
+
+  parameters:
+    - title: Component basic information
+      required:
+        - name
+        - domain
+        - dataproduct
+        - description
+      properties:
+        name:
+          title: Name
+          type: string
+          description: Required name used for display purposes
+          ui:field: EntityNamePicker
+          default: Airflow CDP Workload
+          ui:options:
+            allowArbitraryValues: true
+        fullyQualifiedName:
+          title: Fully Qualified Name
+          type: string
+          description: Workload fully qualified name
+        description:
+          title: Description
+          type: string
+          description: Help others understand what this Workload is for
+        domain:
+          title: Domain
+          type: string
+          description: Domain of the Data Product this Workload belongs to
+          ui:field: EntityPicker
+          ui:options:
+            allowArbitraryValues: false
+            allowedKinds: 
+              - Domain
+        dataproduct:
+          title: Data Product
+          type: string
+          description: Data Product this Workload belongs to
+          ui:field: EntityPicker
+          ui:filter:
+            - fieldName: domain
+              entityPath: spec.domain
+          ui:options:
+            allowArbitraryValues: false
+            allowedKinds: 
+              - System
+        identifier:
+          title: Identifier
+          type: string
+          description: A unique identifier for the entity inside the domain. It will not be editable aftrer creation and is expected to be a string that is sequences of [a-zA-Z] separated by any of [-_]. An example could be 'finance-customer'
+          ui:field: ComponentIdentifierPicker
+          ui:options:
+            allowArbitraryValues: false
+        developmentGroup:
+          title: DevelopmentGroup
+          type: string
+          description: Data Product development group
+          ui:field: EntitySelectionPicker
+          ui:fieldName: dataproduct
+          ui:property: spec.owner
+          ui:options:
+            allowArbitraryValues: false
+        dependsOn:
+          title: Depends on
+          type: array
+          default: []
+          items:
+            type: string
+            ui:field: EntityComponentsPicker
+            ui:fieldName: dataproduct
+            ui:options:
+              allowArbitraryValues: false
+          description: A Workload could depend on other components
+        readsFrom:
+          title: Reads from
+          type: array
+          default: []
+          items:
+            type: string
+            ui:field: ReadsFromPicker
+          description: This is filled only for DataPipeline workloads and it represents the list of output ports or external systems that is reading
+
+    - title: Airflow infrastructure details
+      required:
+        - service
+        - cluster
+        - bucket
+        - jobName
+      properties:
+        service: 
+          title: CDE Service
+          type: string
+          description: Name of the CDE Service
+        cluster:
+          title: CDE Virtual Cluster
+          type: string
+          description: Name of the CDE Virtual Cluster
+        bucket: 
+          title: Artifact bucket
+          type: string
+          description: S3 Bucket name where airflow artifacts will be stored
+        jobName: 
+          title: Job name
+          type: string
+          description: Airflow job name must be formatted as $DpDomain-$DpName-$DpMajorVersion-$WorkloadName-$Environment and must contains only characters in the range [a-zA-Z0-9-_]. Any not allowed characters in $DpDomain, $DpName, $DpMajorVersion or $Environment must be substituted with \"-\"
+
+    - title: Choose a location
+      required:
+        - repoUrl
+      properties:
+        repoUrl:
+          title: Repository Location
+          type: string
+          ui:field: RepoUrlPicker
+          ui:options:
+            allowedHosts:
+              - gitlab.com
+        rootDirectory:
+          title: Root Directory
+          type: string
+          description: Path that will be used as the repository root for this component
+          default: .
+
+  steps:
+    - id: template
+      name: Fetch Skeleton + Template
+      action: fetch:template
+      input:
+        url: ./skeleton
+        targetPath: '${{ parameters.rootDirectory }}'
+        values:
+          name: '${{ parameters.name }}'
+          fullyQualifiedName: '${{ parameters.fullyQualifiedName }}'
+          description: '${{ parameters.description }}'
+          domain: '${{ parameters.domain }}'
+          dataproduct: '${{ parameters.dataproduct }}'
+          identifier: '${{ parameters.identifier }}'
+          developmentGroup: '${{ parameters.developmentGroup }}'
+          dependsOn: '${{ parameters.dependsOn }}'
+          readsFrom: '${{ parameters.readsFrom }}'
+          service: '${{ parameters.service }}'
+          cluster: '${{ parameters.cluster }}'
+          bucket: '${{ parameters.bucket }}'
+          jobName: '${{ parameters.jobName }}'
+          useCaseTemplateId: urn:dmb:utm:airflow-workload-template:0.0.0
+          infrastructureTemplateId: urn:dmb:itm:cdp-aws-workload-airflow-provisioner:2
+          useCaseTemplateVersion: 0.0.0
+          destination: '${{ parameters.repoUrl | parseRepoUrl }}'
+          displayName: '${{ parameters.displayName }}'
+
+
+    - id: publish
+      name: Publish
+      action: witboostMeshComponent:publish:gitlab
+      input:
+        allowedHosts: ['gitlab.com']
+        description: 'This is ${{ parameters.name }}'
+        repoUrl: '${{ parameters.repoUrl }}'
+        rootDirectory: '${{ parameters.rootDirectory }}'
+        dataproduct: '${{ parameters.dataproduct }}'
+
+    - id: register
+      name: Register
+      action: catalog:register
+      input:
+        repoContentsUrl: '${{ steps.publish.output.repoContentsUrl }}'
+        catalogInfoPath: '/${{ parameters.rootDirectory }}/catalog-info.yaml'
+
+  output:
+    links:
+      - title: Repository
+        url: '${{ steps.publish.output.remoteUrl }}'
+      - title: Open in catalog
+        icon: catalog
+        entityRef: '${{ steps.register.output.entityRef }}'
