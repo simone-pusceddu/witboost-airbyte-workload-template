@@ -22,7 +22,7 @@ spec:
     fullyQualifiedName: ${{ values.fullyQualifiedName | dump }}
     description: ${{ values.description | dump }}
     kind: workload
-    version: 0.0.0
+    version: ${{ values.identifier.split(".")[2] + ".0.0" }}
     infrastructureTemplateId: ${{ values.infrastructureTemplateId }}
     useCaseTemplateId: ${{ values.useCaseTemplateId }}
     dependsOn: {% if values.dependsOn | length > 0 %}{% for i in values.dependsOn %}
