@@ -4,6 +4,8 @@ metadata:
   name: cdp-aws-workload-airflow-template.1
   title: Workload CDP Airflow Template
   description: Create a repository containing the definition of a CDP Airflow Workload
+  mesh:
+    icon: https://cwiki.apache.org/confluence/download/attachments/145723561/airflow_transparent.png?api=v2
   tags:
     - aws
     - cdp
