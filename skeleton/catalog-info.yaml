@@ -35,7 +35,6 @@ spec:
     readsFrom: {% if values.readsFrom | length > 0 %}{% for i in values.readsFrom %}
       - ${{ i }}{% endfor %}{% else %}[]{% endif %}
     specific: 
-      cdeService: ${{ values.service }}
-      cdeCluster: ${{ values.cluster }}
-      dagFile: s3://${{ values.bucket }}/${{ values.domain }}/${{ values.dataproduct }}/0.0.0/airflow-dag.py
-      jobName: ${{ values.jobName }}
+      sourceDag: ${{ values.sourceDag }}
+      destinationDag: ${{ values.destinationDag }}
+      scheduleCron: ${{ values.scheduleCron }}

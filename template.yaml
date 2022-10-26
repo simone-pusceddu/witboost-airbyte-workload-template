@@ -98,27 +98,21 @@ spec:
 
     - title: Airflow infrastructure details
       required:
-        - service
-        - cluster
-        - bucket
-        - jobName
+        - sourceDag
+        - destinationDag
       properties:
-        service: 
-          title: CDE Service
+        sourceDag: 
+          title: Source s3 dag location
           type: string
-          description: Name of the CDE Service
-        cluster:
-          title: CDE Virtual Cluster
+          description: Source s3 dag location
+        destinationDag:
+          title: Destination s3 dag location
           type: string
-          description: Name of the CDE Virtual Cluster
-        bucket: 
-          title: Artifact bucket
+          description: Destination s3 dag location
+        scheduleCron: 
+          title: Cron expression defining schedule
           type: string
-          description: S3 Bucket name where airflow artifacts will be stored
-        jobName: 
-          title: Job name
-          type: string
-          description: Airflow job name must be formatted as $DpDomain-$DpName-$DpMajorVersion-$WorkloadName-$Environment and must contains only characters in the range [a-zA-Z0-9-_]. Any not allowed characters in $DpDomain, $DpName, $DpMajorVersion or $Environment must be substituted with \"-\"
+          description: Cron expression defining schedule
 
     - title: Choose a location
       required:
@@ -154,10 +148,9 @@ spec:
           developmentGroup: '${{ parameters.developmentGroup }}'
           dependsOn: '${{ parameters.dependsOn }}'
           readsFrom: '${{ parameters.readsFrom }}'
-          service: '${{ parameters.service }}'
-          cluster: '${{ parameters.cluster }}'
-          bucket: '${{ parameters.bucket }}'
-          jobName: '${{ parameters.jobName }}'
+          sourceDag: '${{ parameters.sourceDag }}'
+          destinationDag: '${{ parameters.destinationDag }}'
+          scheduleCron: '${{ parameters.scheduleCron }}'
           useCaseTemplateId: urn:dmb:utm:airflow-workload-template:0.0.0
           infrastructureTemplateId: urn:dmb:itm:cdp-aws-workload-airflow-provisioner:2
           useCaseTemplateVersion: 0.0.0
