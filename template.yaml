@@ -98,14 +98,14 @@ spec:
 
     - title: Airflow infrastructure details
       required:
-        - sourceDag
-        - destinationDag
+        - sourceBucket
+        - destinationBucket
       properties:
-        sourceDag: 
+        sourceBucket: 
           title: Source s3 dag location
           type: string
           description: Source s3 dag location
-        destinationDag:
+        destinationBucket:
           title: Destination s3 dag location
           type: string
           description: Destination s3 dag location
@@ -113,6 +113,10 @@ spec:
           title: Cron expression defining schedule
           type: string
           description: Cron expression defining schedule
+        dagName: 
+          title: Dag definition file name
+          type: string
+          description: Dag definition file name
 
     - title: Choose a location
       required:
@@ -148,8 +152,9 @@ spec:
           developmentGroup: '${{ parameters.developmentGroup }}'
           dependsOn: '${{ parameters.dependsOn }}'
           readsFrom: '${{ parameters.readsFrom }}'
-          sourceDag: '${{ parameters.sourceDag }}'
-          destinationDag: '${{ parameters.destinationDag }}'
+          sourceBucket: '${{ parameters.sourceBucket }}'
+          destinationBucket: '${{ parameters.destinationBucket }}'
+          dagName: '${{ parameters.dagName }}'
           scheduleCron: '${{ parameters.scheduleCron }}'
           useCaseTemplateId: urn:dmb:utm:airflow-workload-template:0.0.0
           infrastructureTemplateId: urn:dmb:itm:cdp-aws-workload-airflow-provisioner:2

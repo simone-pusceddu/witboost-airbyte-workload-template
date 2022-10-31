@@ -35,6 +35,7 @@ spec:
     readsFrom: {% if values.readsFrom | length > 0 %}{% for i in values.readsFrom %}
       - ${{ i }}{% endfor %}{% else %}[]{% endif %}
     specific: 
-      sourceDag: ${{ values.sourceDag }}
-      destinationDag: ${{ values.destinationDag }}
+      sourceBucket: ${{ values.sourceBucket }}
+      destinationBucket: ${{ values.destinationBucket }}
       scheduleCron: ${{ values.scheduleCron }}
+      dagName: ${{ values.dagName }}
