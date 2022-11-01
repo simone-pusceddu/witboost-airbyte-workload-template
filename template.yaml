@@ -1,14 +1,13 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: cdp-aws-workload-airflow-template.1
-  title: Workload CDP Airflow Template
-  description: Create a repository containing the definition of a CDP Airflow Workload
+  name: aws-workload-airflow-template.1
+  title: Workload Airflow MWAA Template
+  description: Create a repository containing the definition of a Airflow Workload
   mesh:
     icon: https://cwiki.apache.org/confluence/download/attachments/145723561/airflow_transparent.png?api=v2
   tags:
     - aws
-    - cdp
     - airflow
     - workload
 spec:
@@ -28,7 +27,7 @@ spec:
           type: string
           description: Required name used for display purposes
           ui:field: EntityNamePicker
-          default: Airflow CDP Workload
+          default: Airflow Workload
           ui:options:
             allowArbitraryValues: true
         fullyQualifiedName:
@@ -156,8 +155,8 @@ spec:
           destinationBucket: '${{ parameters.destinationBucket }}'
           dagName: '${{ parameters.dagName }}'
           scheduleCron: '${{ parameters.scheduleCron }}'
-          useCaseTemplateId: urn:dmb:utm:airflow-workload-template:0.0.0
-          infrastructureTemplateId: urn:dmb:itm:cdp-aws-workload-airflow-provisioner:2
+          useCaseTemplateId: urn:dmb:utm:aws-airflow-workload-template:0.0.0
+          infrastructureTemplateId: urn:dmb:itm:aws-workload-airflow-provisioner:0
           useCaseTemplateVersion: 0.0.0
           destination: '${{ parameters.repoUrl | parseRepoUrl }}'
           displayName: '${{ parameters.displayName }}'

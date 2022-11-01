@@ -8,7 +8,6 @@ metadata:
     backstage.io/techdocs-ref: dir:.
   tags:
     - aws
-    - cdp
     - airflow
     - workload
 spec:
@@ -27,7 +26,7 @@ spec:
     useCaseTemplateId: ${{ values.useCaseTemplateId }}
     dependsOn: {% if values.dependsOn | length > 0 %}{% for i in values.dependsOn %}
       - ${{ i }}{% endfor %}{% else %}[]{% endif %}
-    platform: CDP on AWS
+    platform: AWS
     technology: airflow
     workloadType: batch
     connectionType: DataPipeline
