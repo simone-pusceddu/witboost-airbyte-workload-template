@@ -1,14 +1,14 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: aws-workload-airflow-template.1
-  title: Workload Airflow MWAA Template
-  description: Create a repository containing the definition of a Airflow Workload
+  name: snowflake-workload-airbyte-template.1
+  title: Workload Airbyte Template
+  description: Create a repository containing the definition of a Airbyte Workload
   mesh:
-    icon: https://cwiki.apache.org/confluence/download/attachments/145723561/airflow_transparent.png?api=v2
+    icon: https://marketplace.digitalocean.com/_next/image?url=https%3A%2F%2Fmarketplace-assets.digitalocean.com%2Flogos%2Fairbyte.png&w=3840&q=75
   tags:
-    - aws
-    - airflow
+    - snowflake
+    - airbyte
     - workload
 spec:
   owner: agilelab
@@ -27,7 +27,7 @@ spec:
           type: string
           description: Required name used for display purposes
           ui:field: EntityNamePicker
-          default: Airflow Workload
+          default: Airbyte Workload
           ui:options:
             allowArbitraryValues: true
         fullyQualifiedName:
@@ -62,7 +62,7 @@ spec:
         identifier:
           title: Identifier
           type: string
-          description: A unique identifier for the entity inside the domain. It will not be editable aftrer creation and is expected to be a string that is sequences of [a-zA-Z] separated by any of [-_]. An example could be 'finance-customer'
+          description: A unique identifier for the entity inside the domain. It will not be editable after creation and is expected to be a string that is sequences of [a-zA-Z] separated by any of [-_]. An example could be 'finance-customer'
           ui:field: ComponentIdentifierPicker
           ui:options:
             allowArbitraryValues: false
@@ -95,27 +95,84 @@ spec:
             ui:field: ReadsFromPicker
           description: This is filled only for DataPipeline workloads and it represents the list of output ports or external systems that is reading
 
-    - title: Airflow infrastructure details
+    - title: Source File Details
       required:
-        - sourceBucket
-        - destinationBucket
+        - sourceName
+        - url
+        - format
+        - storage
+        - dataset_name
       properties:
-        sourceBucket: 
-          title: Source s3 dag location
+        sourceName:
+          title: Name of the Source
           type: string
-          description: Source s3 dag location
-        destinationBucket:
-          title: Destination s3 dag location
+          description: Pick a name to help you identify this source in Airbyte
+        url:
+          title: URL of the Source
           type: string
-          description: Destination s3 dag location
-        scheduleCron: 
-          title: Cron expression defining schedule
+          description: The URL path to access the file which should be replicated
+        format:
+          title: Format of the Source
           type: string
-          description: Cron expression defining schedule
-        dagName: 
-          title: Dag definition file name
+          description: "The Format of the file which should be replicated (Warning: some formats may be experimental, please refer to the Airbyte docs)."
+          enum:
+            - csv
+            - json
+            - jsonl
+            - excel
+            - excel_binary
+            - feather
+            - parquet
+            - yaml
+        storage:
+          title: Storage Provider
           type: string
-          description: Dag definition file name
+          description: The storage Provider or Location of the file(s) which should be replicated (Ex - HTTPS)
+        user_agent:
+          title: User-Agent
+          type: boolean
+          description: Add User-Agent to request
+        dataset_name:
+          title: Name of the Dataset
+          type: string
+          description: The Name of the final table to replicate this file into (should include letters, numbers, dash and underscores only).
+    - title: Snowflake Destination details
+      required:
+        - destinationName
+        - host
+        - schema
+        - database
+        - warehouse
+      properties:
+        destinationName:
+          title: Name of the Destination
+          type: string
+          description: Name of the Destination
+        host:
+          title: Host
+          type: string
+          description: Enter your Snowflake account's locator (in the format ...snowflakecomputing.com)
+        warehouse:
+          title: Warehouse
+          type: string
+          description: Name of the Warehouse
+        database:
+          title: Database
+          type: string
+          description: Name of the Database within the Schema
+        schema:
+          title: Schema
+          type: string
+          description: Name of the Schema
+
+    - title: Connection
+      required:
+        - connectionName
+      properties:
+        connectionName:
+          title: connectionName
+          type: string
+          description: Name of the connection
 
     - title: Choose a location
       required:
@@ -151,12 +208,20 @@ spec:
           developmentGroup: '${{ parameters.developmentGroup }}'
           dependsOn: '${{ parameters.dependsOn }}'
           readsFrom: '${{ parameters.readsFrom }}'
-          sourceBucket: '${{ parameters.sourceBucket }}'
-          destinationBucket: '${{ parameters.destinationBucket }}'
-          dagName: '${{ parameters.dagName }}'
-          scheduleCron: '${{ parameters.scheduleCron }}'
-          useCaseTemplateId: urn:dmb:utm:aws-airflow-workload-template:0.0.0
-          infrastructureTemplateId: urn:dmb:itm:aws-workload-airflow-provisioner:0
+          sourceName: '${{parameters.sourceName}}'
+          url: '${{parameters.url}}'
+          format: '${{parameters.format}}'
+          storage: '${{parameters.storage}}'
+          user_agent: '${{parameters.user_agent}}'
+          dataset_name: '${{parameters.dataset_name}}'
+          destinationName: '${{parameters.destinationName}}'
+          host: '${{parameters.host}}'
+          schema: '${{parameters.schema}}'
+          database: '${{parameters.database}}'
+          warehouse: '${{parameters.warehouse}}'
+          connectionName: '${{parameters.connectionName}}'
+          useCaseTemplateId: urn:dmb:utm:dbt-standard:0.0.0
+          infrastructureTemplateId: urn:dmb:itm:dbt-provisioner:1
           useCaseTemplateVersion: 0.0.0
           destination: '${{ parameters.repoUrl | parseRepoUrl }}'
           displayName: '${{ parameters.displayName }}'
