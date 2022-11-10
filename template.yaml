@@ -75,26 +75,7 @@ spec:
           ui:property: spec.owner
           ui:options:
             allowArbitraryValues: false
-        dependsOn:
-          title: Depends on
-          type: array
-          default: []
-          items:
-            type: string
-            ui:field: EntityComponentsPicker
-            ui:fieldName: dataproduct
-            ui:options:
-              allowArbitraryValues: false
-          description: A Workload could depend on other components
-        readsFrom:
-          title: Reads from
-          type: array
-          default: []
-          items:
-            type: string
-            ui:field: ReadsFromPicker
-          description: This is filled only for DataPipeline workloads and it represents the list of output ports or external systems that is reading
-
+        
     - title: Source File Details
       required:
         - sourceName
@@ -104,16 +85,17 @@ spec:
         - dataset_name
       properties:
         sourceName:
-          title: Name of the Source
+          title: Source Name
           type: string
           description: Pick a name to help you identify this source in Airbyte
         url:
-          title: URL of the Source
+          title: URL
           type: string
           description: The URL path to access the file which should be replicated
         format:
-          title: Format of the Source
+          title: File Format
           type: string
+          default: csv
           description: "The Format of the file which should be replicated (Warning: some formats may be experimental, please refer to the Airbyte docs)."
           enum:
             - csv
@@ -127,13 +109,22 @@ spec:
         storage:
           title: Storage Provider
           type: string
-          description: The storage Provider or Location of the file(s) which should be replicated (Ex - HTTPS)
+          default: HTTPS
+          description: The storage Provider or Location of the file(s) which should be replicated. Only HTTPS is supported for now
+          oneOf:
+            - { const: HTTPS, title: "HTTPS: Public Web" }
+            - { const: GCS, title: "GCS: Google Cloud Storage" }
+            - { const: S3, title: "S3: Amazon Web Services" }
+            - { const: AzBlob, title: "AzBlob: Azure Blob Storage" }
+            - { const: SSH, title: "SSH: Secure Shell" }
+            - { const: SCP, title: "SCP: Secure Copy Protocol" }
+            - { const: SFTP, title: "SFTP: Secure File Transfer Protocol" }
         user_agent:
           title: User-Agent
           type: boolean
           description: Add User-Agent to request
         dataset_name:
-          title: Name of the Dataset
+          title: Dataset Name
           type: string
           description: The Name of the final table to replicate this file into (should include letters, numbers, dash and underscores only).
     - title: Snowflake Destination details
@@ -145,9 +136,9 @@ spec:
         - warehouse
       properties:
         destinationName:
-          title: Name of the Destination
+          title: Destination Name
           type: string
-          description: Name of the Destination
+          description: Pick a name to help you identify this destination in Airbyte
         host:
           title: Host
           type: string
@@ -170,7 +161,7 @@ spec:
         - connectionName
       properties:
         connectionName:
-          title: connectionName
+          title: Connection Name
           type: string
           description: Name of the connection
 
@@ -220,8 +211,8 @@ spec:
           database: '${{parameters.database}}'
           warehouse: '${{parameters.warehouse}}'
           connectionName: '${{parameters.connectionName}}'
-          useCaseTemplateId: urn:dmb:utm:dbt-standard:0.0.0
-          infrastructureTemplateId: urn:dmb:itm:dbt-provisioner:1
+          useCaseTemplateId: urn:dmb:utm:airbyte-standard:0.0.0
+          infrastructureTemplateId: urn:dmb:itm:airbyte-provisioner:0
           useCaseTemplateVersion: 0.0.0
           destination: '${{ parameters.repoUrl | parseRepoUrl }}'
           displayName: '${{ parameters.displayName }}'
