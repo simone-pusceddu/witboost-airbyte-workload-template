@@ -71,18 +71,12 @@ This section will help Airbyte locate the file and how to read it. Right now we 
 This section will setup the Snowflake destination and tell Airbyte where to store the data.
 
 - Destination name: A name to identify the Destination on the Airbyte environment
-- Host: URL of the Snowflake account locator, it's usually in the form `<account_name>.snowflakecomputing.com` or `<account_name>.<region>.snowflakecomputing.com`.
-- Warehouse: Enter the name of the warehouse that you want to sync data into
-- Database: Enter the name of the database you want to sync data into
-- Schema: Enter the name of the default schema
+- Database: Enter the name of the database you want to sync data into (Optional, if not specified the default DB will be set)
+- Schema: Enter the name of the default schema (Optional, if not specified the default schema will be set)
 
 *Example:*
 
 **Destination name:** Snowflake
-
-**Host:** myaccount1234.snowflakecomputing.com
-
-**Warehouse:** AIRBYTEWH
 
 **Database:** AIRBYTEDB
 
@@ -96,7 +90,7 @@ Lastly, we need to give a custom name to the connection between the File and Sno
 
 - Connection Name: A name to identify the connection on the Airbyte environment. A common format is "Source Name \<> Destination Name".
 
-Remember this connection name, as you will need to input it again exactly the same when setting up the MWAA workload.
+**Remember this connection name, as you will need to input it again exactly the same when setting up the MWAA workload.**
 
 *Example:*
 

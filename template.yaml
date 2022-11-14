@@ -111,6 +111,7 @@ spec:
           type: string
           default: HTTPS
           description: The storage Provider or Location of the file(s) which should be replicated. Only HTTPS is supported for now
+          ui:disabled: true
           oneOf:
             - { const: HTTPS, title: "HTTPS: Public Web" }
             - { const: GCS, title: "GCS: Google Cloud Storage" }
@@ -122,6 +123,7 @@ spec:
         user_agent:
           title: User-Agent
           type: boolean
+          default: false
           description: Add User-Agent to request
         dataset_name:
           title: Dataset Name
@@ -130,23 +132,11 @@ spec:
     - title: Snowflake Destination details
       required:
         - destinationName
-        - host
-        - schema
-        - database
-        - warehouse
       properties:
         destinationName:
           title: Destination Name
           type: string
           description: Pick a name to help you identify this destination in Airbyte
-        host:
-          title: Host
-          type: string
-          description: Enter your Snowflake account's locator (in the format ...snowflakecomputing.com)
-        warehouse:
-          title: Warehouse
-          type: string
-          description: Name of the Warehouse
         database:
           title: Database
           type: string
