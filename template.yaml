@@ -75,6 +75,17 @@ spec:
           ui:property: spec.owner
           ui:options:
             allowArbitraryValues: false
+        dependsOn:
+          title: Depends on
+          type: array
+          default: []
+          items:
+            type: string
+            ui:field: EntityComponentsPicker
+            ui:fieldName: dataproduct
+            ui:options:
+              allowArbitraryValues: false
+          description: A Workload could depend on other components
         
     - title: Source File Details
       required:
