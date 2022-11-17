@@ -71,8 +71,8 @@ This section will help Airbyte locate the file and how to read it. Right now we 
 This section will setup the Snowflake destination and tell Airbyte where to store the data.
 
 - Destination name: A name to identify the Destination on the Airbyte environment
-- Database: Enter the name of the database you want to sync data into (Optional, if not specified the default DB will be set)
-- Schema: Enter the name of the default schema (Optional, if not specified the default schema will be set)
+- Database: (Optional) Enter the name of the database you want to sync data into. If not specified the Domain name will be set as default value.
+- Schema: (Optional) Enter the name of the default schema. If not specified the value `<DP_name>_<DP_version>` will be set as default value. (The version will be rendered without the dots)
 
 *Example:*
 
@@ -96,7 +96,7 @@ Lastly, we need to give a custom name to the connection between the File and Sno
 
 **Connection Name:** GoogleCovidDataset \<> Snowflake
 
-### Choose a connection
+### Choose a location
 
 Every component needs a host where the generated code will be saved. The default is `gitlab.com`. Refer to your team to understand the structure on how to use your repository to save this components.
 
@@ -108,7 +108,6 @@ Every component needs a host where the generated code will be saved. The default
 *Example:*
 
 ***Host:*** gitlab.com
-
 
 **User/Group:** MyCompany/Sandbox
 
