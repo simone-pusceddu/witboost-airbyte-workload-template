@@ -151,11 +151,11 @@ spec:
         database:
           title: Database
           type: string
-          description: Name of the Database within the Schema
+          description: Name of the Database in Snowflake. If not provided, default value (In this case, domain name) will be assigned during the creation.
         schema:
           title: Schema
           type: string
-          description: Name of the Schema
+          description: Name of the Schema inside a Snowflake Database. If not provided, default value (In this case, dpname_dpversion) will be assigned during the creation.
 
     - title: Connection
       required:
