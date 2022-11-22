@@ -35,7 +35,7 @@ spec:
       - ${{ i }}{% endfor %}{% else %}[]{% endif %}
     specific:
       source:
-        name: ${{ values.sourceName }}
+        name: ${{ values.identifier.split(".").slice(0, 3).join(".") }}.${{ values.sourceName }}
         connectionConfiguration:
           url: ${{ values.url }}
           format: ${{ values.format }}
@@ -44,11 +44,11 @@ spec:
             user_agent: ${{ values.user_agent }}
           dataset_name: ${{ values.dataset_name }}
       destination:
-        name: ${{ values.destinationName }}
+        name: ${{ values.identifier.split(".").slice(0, 3).join(".") }}.${{ values.destinationName }}
         connectionConfiguration:
           host: ${{ values.host }}
           schema: ${{ values.schema }}
           database: ${{ values.database }}
           warehouse: ${{ values.warehouse }}
       connection:
-        name: ${{ values.connectionName }}
+        name: ${{ values.identifier.split(".").slice(0, 3).join(".") }}.${{ values.connectionName }}
