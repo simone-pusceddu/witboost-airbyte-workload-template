@@ -99,6 +99,7 @@ spec:
           title: Source Name
           type: string
           description: Pick a name to help you identify this source in Airbyte
+          default: File
         url:
           title: URL
           type: string
@@ -148,6 +149,7 @@ spec:
           title: Destination Name
           type: string
           description: Pick a name to help you identify this destination in Airbyte
+          default: Snowflake
         database:
           title: Database
           type: string
@@ -165,6 +167,7 @@ spec:
           title: Connection Name
           type: string
           description: Name of the connection
+          default: File <> Snowflake
 
     - title: Choose a location
       required:
