@@ -52,3 +52,4 @@ spec:
           warehouse: ${{ values.warehouse }}
       connection:
         name: ${{ values.identifier.split(".").slice(0, 3).join(".") }}.${{ values.connectionName }}
+        dbtGitUrl: {% if values.dbtTransformation %} ${{ values.dbtGitUrl }} {% else %} {% endif %}

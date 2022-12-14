@@ -169,6 +169,41 @@ spec:
           type: string
           description: Name of the connection
           default: File <> Snowflake
+        dbtTransformation:
+          title: Add a dbt transformation
+          type: boolean
+          description: If you want to add a repository containing a dbt transformation to apply to the data
+          default: false
+      dependencies:
+        dbtTransformation:
+          oneOf:
+          - properties:
+              dbtTransformation:
+                enum: [false]
+          - properties:
+              dbtTransformation:
+                enum: [true]
+              dbtComponent:
+                title: dbt Component
+                type: string
+                ui:field: EntityComponentsPicker
+                ui:fieldName: dataproduct
+                ui:options:
+                  allowArbitraryValues: false
+                description: Choose the dbt component that was created for the current Data Product
+              dbtGitUrl:
+                title: dbt git URL
+                type: string
+                description: This will be the URL that will be used for the dbt project
+                ui:field: EntitySelectionPicker
+                ui:fieldName: dbtComponent
+                ui:property: spec.mesh.specific.gitUrl
+                ui:idType: urn
+                ui:options:
+                  allowArbitraryValues: false
+            required:
+              - dbtComponent
+              - dbtGitUrl
 
     - title: Choose a location
       required:
@@ -216,6 +251,8 @@ spec:
           database: '${{parameters.database}}'
           warehouse: '${{parameters.warehouse}}'
           connectionName: '${{parameters.connectionName}}'
+          dbtTransformation: '${{parameters.dbtTransformation}}'
+          dbtGitUrl: '${{parameters.dbtGitUrl}}'
           useCaseTemplateId: urn:dmb:utm:airbyte-standard:0.0.0
           infrastructureTemplateId: urn:dmb:itm:airbyte-provisioner:0
           useCaseTemplateVersion: 0.0.0
