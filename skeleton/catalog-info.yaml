@@ -46,10 +46,8 @@ spec:
       destination:
         name: ${{ values.identifier.split(".").slice(0, 3).join(".") }}.${{ values.destinationName }}
         connectionConfiguration:
-          host: ${{ values.host }}
-          schema: ${{ values.schema }}
-          database: ${{ values.database }}
-          warehouse: ${{ values.warehouse }}
+          database: ${{ values.database | default(values.domain, true) | replace(r/domain:| |-/, "") | upper | dump}}
+          schema: ${{ (values.schema | default(values.dataproduct.split(".")[1], true) | replace(r/ |-/, "") + "_" + values.identifier.split(".")[2]) | upper | dump }}
       connection:
         name: ${{ values.identifier.split(".").slice(0, 3).join(".") }}.${{ values.connectionName }}
         dbtGitUrl: {% if values.dbtTransformation %} ${{ values.dbtGitUrl }} {% else %} {% endif %}

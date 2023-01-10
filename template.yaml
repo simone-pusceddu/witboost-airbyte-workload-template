@@ -149,7 +149,8 @@ spec:
           title: Dataset Name
           type: string
           description: The Name of the final table to replicate this file into (should include letters, numbers, dash and underscores only).
-          default: GOOGLE_COVID_DATASET
+          default: vaccinations_raw
+    
     - title: Snowflake Destination details
       required:
         - destinationName
@@ -162,11 +163,11 @@ spec:
         database:
           title: Database
           type: string
-          description: Name of the Database in Snowflake. If not provided, default value (In this case, domain name) will be assigned during the creation.
+          description: Name of the Database in Snowflake. If not provided, the default value (In this case, domain name) will be assigned during the creation.
         schema:
           title: Schema
           type: string
-          description: Name of the Schema inside a Snowflake Database. If not provided, default value (In this case, dpname_dpversion) will be assigned during the creation.
+          description: Name of the Schema inside a Snowflake database. If not provided, the default value (In this case, dpname_dpversion) will be assigned during the creation.
 
     - title: Connection
       required:
@@ -254,10 +255,8 @@ spec:
           user_agent: '${{parameters.user_agent}}'
           dataset_name: '${{parameters.dataset_name}}'
           destinationName: '${{parameters.destinationName}}'
-          host: '${{parameters.host}}'
           schema: '${{parameters.schema}}'
           database: '${{parameters.database}}'
-          warehouse: '${{parameters.warehouse}}'
           connectionName: '${{parameters.connectionName}}'
           dbtTransformation: '${{parameters.dbtTransformation}}'
           dbtGitUrl: '${{parameters.dbtGitUrl}}'
