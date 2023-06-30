@@ -178,58 +178,6 @@ spec:
           type: string
           description: Name of the connection
           default: File <> Snowflake
-        dbtTransformation:
-          title: Add a dbt transformation
-          type: boolean
-          description: If you want to add a repository containing a dbt transformation to apply to the data
-          default: false
-      dependencies:
-        dbtTransformation:
-          oneOf:
-          - properties:
-              dbtTransformation:
-                enum: [false]
-          - properties:
-              dbtTransformation:
-                enum: [true]
-              dbtComponent:
-                title: dbt Component
-                type: string
-                ui:field: EntityComponentsPicker
-                ui:fieldName: dataproduct
-                ui:options:
-                  allowArbitraryValues: false
-                description: Choose the dbt component that was created for the current Data Product
-              dbtGitUrl:
-                title: dbt git URL
-                type: string
-                description: This will be the URL that will be used for the dbt project
-                ui:field: EntitySelectionPicker
-                ui:fieldName: dbtComponent
-                ui:property: spec.mesh.specific.gitUrl
-                ui:idType: urn
-                ui:options:
-                  allowArbitraryValues: false
-            required:
-              - dbtComponent
-              - dbtGitUrl
-
-    - title: Choose a location
-      required:
-        - repoUrl
-      properties:
-        repoUrl:
-          title: Repository Location
-          type: string
-          ui:field: RepoUrlPicker
-          ui:options:
-            allowedHosts:
-              - gitlab.com
-        rootDirectory:
-          title: Root Directory
-          type: string
-          description: Path that will be used as the repository root for this component
-          default: .
 
   steps:
     - id: template
@@ -237,7 +185,7 @@ spec:
       action: fetch:template
       input:
         url: ./skeleton
-        targetPath: '${{ parameters.rootDirectory }}'
+        targetPath: '.'
         values:
           name: '${{ parameters.name }}'
           fullyQualifiedName: '${{ parameters.fullyQualifiedName }}'
@@ -248,22 +196,21 @@ spec:
           developmentGroup: '${{ parameters.developmentGroup }}'
           dependsOn: '${{ parameters.dependsOn }}'
           readsFrom: '${{ parameters.readsFrom }}'
-          sourceName: '${{parameters.sourceName}}'
-          url: '${{parameters.url}}'
-          format: '${{parameters.format}}'
-          storage: '${{parameters.storage}}'
-          user_agent: '${{parameters.user_agent}}'
-          dataset_name: '${{parameters.dataset_name}}'
-          destinationName: '${{parameters.destinationName}}'
-          schema: '${{parameters.schema}}'
-          database: '${{parameters.database}}'
-          connectionName: '${{parameters.connectionName}}'
-          dbtTransformation: '${{parameters.dbtTransformation}}'
-          dbtGitUrl: '${{parameters.dbtGitUrl}}'
+          sourceName: '${{ parameters.sourceName }}'
+          url: '${{ parameters.url }}'
+          format: '${{ parameters.format }}'
+          storage: '${{ parameters.storage }}'
+          user_agent: '${{ parameters.user_agent }}'
+          dataset_name: '${{ parameters.dataset_name }}'
+          destinationName: '${{ parameters.destinationName }}'
+          schema: '${{ parameters.schema }}'
+          database: '${{ parameters.database }}'
+          connectionName: '${{ parameters.connectionName }}'
           useCaseTemplateId: urn:dmb:utm:airbyte-standard:0.0.0
           infrastructureTemplateId: urn:dmb:itm:airbyte-provisioner:0
           useCaseTemplateVersion: 0.0.0
-          destination: '${{ parameters.repoUrl | parseRepoUrl }}'
+          repoUrl: 'gitlab.com?owner=AgileDMBSandbox%2F${{orgname}}%2Fmesh.repository%2F${{ parameters.domain | replace(r/domain:| |-/, "") }}%2F${{ parameters.dataproduct.split(".")[1] | replace(r/ |-/g, "") }}&repo=${{ parameters.name.split(" ") | join("") | lower }}'
+          rootDirectory: '.'
           displayName: '${{ parameters.displayName }}'
 
 
@@ -273,8 +220,8 @@ spec:
       input:
         allowedHosts: ['gitlab.com']
         description: 'This is ${{ parameters.name }}'
-        repoUrl: '${{ parameters.repoUrl }}'
-        rootDirectory: '${{ parameters.rootDirectory }}'
+        repoUrl: 'gitlab.com?owner=AgileDMBSandbox%2F${{orgname}}%2Fmesh.repository%2F${{ parameters.domain | replace(r/domain:| |-/, "") }}%2F${{ parameters.dataproduct.split(".")[1] | replace(r/ |-/g, "") }}&repo=${{ parameters.name.split(" ") | join("") | lower }}'
+        rootDirectory: '.'
         dataproduct: '${{ parameters.dataproduct }}'
 
     - id: register
@@ -282,7 +229,7 @@ spec:
       action: catalog:register
       input:
         repoContentsUrl: '${{ steps.publish.output.repoContentsUrl }}'
-        catalogInfoPath: '/${{ parameters.rootDirectory }}/catalog-info.yaml'
+        catalogInfoPath: '/catalog-info.yaml'
 
   output:
     links:
