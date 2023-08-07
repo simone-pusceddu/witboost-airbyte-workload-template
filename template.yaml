@@ -143,13 +143,12 @@ spec:
         user_agent:
           title: User-Agent
           type: boolean
-          default: true
+          default: false
           description: It is a relatively short bit of text that (attempts to) describe the Software/Browser (the "Agent") that is making the request to a website.
         dataset_name:
           title: Dataset Name
           type: string
           description: The Name of the final table to replicate this file into (should include letters, numbers, dash and underscores only).
-          default: vaccinations_raw
     
     - title: Snowflake Destination details
       required:
