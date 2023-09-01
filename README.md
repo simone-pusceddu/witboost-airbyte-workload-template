@@ -135,3 +135,9 @@ After this the system will show you the summary of the template, and you can go 
 After clicking on "Create" the registering of the Component will start. If no errors occurred it will go through the 3 phases (Fetching, Publishing and Registering) and will give you the links to the newly created Repository and the component in the Catalog.
 
 After this, we can move on to either creating the Snowflake SQL Workload if you haven't defined a data transformation, or directly to creating the Snowflake Output Port if you have.
+
+### Component Testing
+
+To verify the component before deploying it along with the Data Product, the component needs to be tested against a CUE Policy defined for [Airbyte Workload](./policies/airbyte.cue). This policy needs to be defined inside the **Governance** section of the Witboost Platform.
+
+For more information, please refer to the [official documentation](https://docs.witboost.agilelab.it/docs/p1_user/p5_managing_policies/p5_1_overview).
