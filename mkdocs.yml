@@ -1,0 +1,8 @@
+site_name: "Airbyte Workload Template"
+site_description: "Creates an Airbyte Connection to perform an ETL operation"
+
+nav:
+  - Template Usage: index.md
+
+plugins:
+  - techdocs-core

@@ -150,7 +150,7 @@ spec:
           type: string
           description: The Name of the final table to replicate this file into (should include letters, numbers, dash and underscores only).
     
-    - title: Snowflake Destination details
+    - title: Snowflake Destination Details
       required:
         - destinationName
       properties:
