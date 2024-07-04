@@ -11,9 +11,9 @@ metadata:
     - airbyte
     - workload
 spec:
+  generates: componenttype:default/workload
   owner: agilelab
   type: workload
-
   parameters:
     - title: Component basic information
       required:
@@ -45,7 +45,7 @@ spec:
           ui:field: EntityPicker
           ui:options:
             allowArbitraryValues: false
-            allowedKinds: 
+            allowedKinds:
               - Domain
         dataproduct:
           title: Data Product
@@ -57,12 +57,15 @@ spec:
               entityPath: spec.domain
           ui:options:
             allowArbitraryValues: false
-            allowedKinds: 
+            allowedKinds:
               - System
         identifier:
           title: Identifier
           type: string
-          description: A unique identifier for the entity inside the domain. It will not be editable after creation and is expected to be a string that is sequences of [a-zA-Z] separated by any of [-_]. An example could be 'finance-customer'
+          description: A unique identifier for the entity inside the domain. It will not
+            be editable after creation and is expected to be a string that is
+            sequences of [a-zA-Z] separated by any of [-_]. An example could be
+            'finance-customer'
           ui:field: ComponentIdentifierPicker
           ui:options:
             allowArbitraryValues: false
@@ -93,8 +96,8 @@ spec:
           items:
             type: string
             ui:field: ReadsFromPicker
-          description: This is filled only for DataPipeline workloads and it represents the list of output ports or external systems that is reading
-        
+          description: This is filled only for DataPipeline workloads and it represents
+            the list of output ports or external systems that is reading
     - title: Source File Details
       required:
         - sourceName
@@ -116,7 +119,8 @@ spec:
           title: File Format
           type: string
           default: csv
-          description: "The Format of the file which should be replicated (Warning: some formats may be experimental, please refer to the Airbyte docs)."
+          description: "The Format of the file which should be replicated (Warning: some
+            formats may be experimental, please refer to the Airbyte docs)."
           enum:
             - csv
             - json
@@ -130,26 +134,36 @@ spec:
           title: Storage Provider
           type: string
           default: HTTPS
-          description: The storage Provider or Location of the file(s) which should be replicated. Only HTTPS is supported for now
+          description: The storage Provider or Location of the file(s) which should be
+            replicated. Only HTTPS is supported for now
           ui:disabled: true
           oneOf:
-            - { const: HTTPS, title: "HTTPS: Public Web" }
-            - { const: GCS, title: "GCS: Google Cloud Storage" }
-            - { const: S3, title: "S3: Amazon Web Services" }
-            - { const: AzBlob, title: "AzBlob: Azure Blob Storage" }
-            - { const: SSH, title: "SSH: Secure Shell" }
-            - { const: SCP, title: "SCP: Secure Copy Protocol" }
-            - { const: SFTP, title: "SFTP: Secure File Transfer Protocol" }
+            - const: HTTPS
+              title: "HTTPS: Public Web"
+            - const: GCS
+              title: "GCS: Google Cloud Storage"
+            - const: S3
+              title: "S3: Amazon Web Services"
+            - const: AzBlob
+              title: "AzBlob: Azure Blob Storage"
+            - const: SSH
+              title: "SSH: Secure Shell"
+            - const: SCP
+              title: "SCP: Secure Copy Protocol"
+            - const: SFTP
+              title: "SFTP: Secure File Transfer Protocol"
         user_agent:
           title: User-Agent
           type: boolean
           default: false
-          description: It is a relatively short bit of text that (attempts to) describe the Software/Browser (the "Agent") that is making the request to a website.
+          description: It is a relatively short bit of text that (attempts to) describe
+            the Software/Browser (the "Agent") that is making the request to a
+            website.
         dataset_name:
           title: Dataset Name
           type: string
-          description: The Name of the final table to replicate this file into (should include letters, numbers, dash and underscores only).
-    
+          description: The Name of the final table to replicate this file into (should
+            include letters, numbers, dash and underscores only).
     - title: Snowflake Destination Details
       required:
         - destinationName
@@ -162,12 +176,15 @@ spec:
         database:
           title: Database
           type: string
-          description: Name of the Database in Snowflake. If not provided, the default value (In this case, domain name) will be assigned during the creation.
+          description: Name of the Database in Snowflake. If not provided, the default
+            value (In this case, domain name) will be assigned during the
+            creation.
         schema:
           title: Schema
           type: string
-          description: Name of the Schema inside a Snowflake database. If not provided, the default value (In this case, dpname_dpversion) will be assigned during the creation.
-
+          description: Name of the Schema inside a Snowflake database. If not provided,
+            the default value (In this case, dpname_dpversion) will be assigned
+            during the creation.
     - title: Connection
       required:
         - connectionName
@@ -177,63 +194,65 @@ spec:
           type: string
           description: Name of the connection
           default: File <> Snowflake
-
   steps:
     - id: template
       name: Fetch Skeleton + Template
       action: fetch:template
       input:
         url: ./skeleton
-        targetPath: '.'
+        targetPath: .
         values:
-          name: '${{ parameters.name }}'
-          fullyQualifiedName: '${{ parameters.fullyQualifiedName }}'
-          description: '${{ parameters.description }}'
-          domain: '${{ parameters.domain }}'
-          dataproduct: '${{ parameters.dataproduct }}'
-          identifier: '${{ parameters.identifier }}'
-          developmentGroup: '${{ parameters.developmentGroup }}'
-          dependsOn: '${{ parameters.dependsOn }}'
-          readsFrom: '${{ parameters.readsFrom }}'
-          sourceName: '${{ parameters.sourceName }}'
-          url: '${{ parameters.url }}'
-          format: '${{ parameters.format }}'
-          storage: '${{ parameters.storage }}'
-          user_agent: '${{ parameters.user_agent }}'
-          dataset_name: '${{ parameters.dataset_name }}'
-          destinationName: '${{ parameters.destinationName }}'
-          schema: '${{ parameters.schema }}'
-          database: '${{ parameters.database }}'
-          connectionName: '${{ parameters.connectionName }}'
+          name: ${{ parameters.name }}
+          fullyQualifiedName: ${{ parameters.fullyQualifiedName }}
+          description: ${{ parameters.description }}
+          domain: ${{ parameters.domain }}
+          dataproduct: ${{ parameters.dataproduct }}
+          identifier: ${{ parameters.identifier }}
+          developmentGroup: ${{ parameters.developmentGroup }}
+          dependsOn: ${{ parameters.dependsOn }}
+          readsFrom: ${{ parameters.readsFrom }}
+          sourceName: ${{ parameters.sourceName }}
+          url: ${{ parameters.url }}
+          format: ${{ parameters.format }}
+          storage: ${{ parameters.storage }}
+          user_agent: ${{ parameters.user_agent }}
+          dataset_name: ${{ parameters.dataset_name }}
+          destinationName: ${{ parameters.destinationName }}
+          schema: ${{ parameters.schema }}
+          database: ${{ parameters.database }}
+          connectionName: ${{ parameters.connectionName }}
           useCaseTemplateId: urn:dmb:utm:airbyte-standard:0.0.0
           infrastructureTemplateId: urn:dmb:itm:airbyte-provisioner:0
           useCaseTemplateVersion: 0.0.0
-          repoUrl: 'gitlab.com?owner=AgileDMBSandbox%2F${{orgname}}%2Fmesh.repository%2F${{ parameters.domain | replace(r/domain:| |-/, "") }}%2F${{ parameters.dataproduct.split(".")[1] | replace(r/ |-/g, "") }}&repo=${{ parameters.name.split(" ") | join("") | lower }}'
-          rootDirectory: '.'
-          displayName: '${{ parameters.displayName }}'
-
-
+          repoUrl: gitlab.com?owner=AgileDMBSandbox%2F${{orgname}}%2Fmesh.repository%2F${{
+            parameters.domain | replace(r/domain:| |-/, "") }}%2F${{
+            parameters.dataproduct.split(".")[1] | replace(r/ |-/g, "")
+            }}&repo=${{ parameters.name.split(" ") | join("") | lower }}
+          rootDirectory: .
+          displayName: ${{ parameters.displayName }}
     - id: publish
       name: Publish
       action: witboostMeshComponent:publish:gitlab
       input:
-        allowedHosts: ['gitlab.com']
-        description: 'This is ${{ parameters.name }}'
-        repoUrl: 'gitlab.com?owner=AgileDMBSandbox%2F${{orgname}}%2Fmesh.repository%2F${{ parameters.domain | replace(r/domain:| |-/, "") }}%2F${{ parameters.dataproduct.split(".")[1] | replace(r/ |-/g, "") }}&repo=${{ parameters.name.split(" ") | join("") | lower }}'
-        rootDirectory: '.'
-        dataproduct: '${{ parameters.dataproduct }}'
-
+        allowedHosts:
+          - gitlab.com
+        description: This is ${{ parameters.name }}
+        repoUrl: gitlab.com?owner=AgileDMBSandbox%2F${{orgname}}%2Fmesh.repository%2F${{
+          parameters.domain | replace(r/domain:| |-/, "") }}%2F${{
+          parameters.dataproduct.split(".")[1] | replace(r/ |-/g, "")
+          }}&repo=${{ parameters.name.split(" ") | join("") | lower }}
+        rootDirectory: .
+        dataproduct: ${{ parameters.dataproduct }}
     - id: register
       name: Register
       action: catalog:register
       input:
-        repoContentsUrl: '${{ steps.publish.output.repoContentsUrl }}'
-        catalogInfoPath: '/catalog-info.yaml'
-
+        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        catalogInfoPath: /catalog-info.yaml
   output:
     links:
       - title: Repository
-        url: '${{ steps.publish.output.remoteUrl }}'
+        url: ${{ steps.publish.output.remoteUrl }}
       - title: Open in catalog
         icon: catalog
-        entityRef: '${{ steps.register.output.entityRef }}'
+        entityRef: ${{ steps.register.output.entityRef }}
