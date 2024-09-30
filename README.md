@@ -22,7 +22,9 @@ Use this template to automatically create an Airbyte connection between a source
 
 Airbyte will take care of creating the Snowflake table, identifying the data schema based on the Pandas IO Tools.
 
-Refer to the [witboost Starter Kit repository](https://github.com/agile-lab-dev/witboost-starter-kit) for information on the Specific Provisioner that can be used to deploy components created with this Template.
+![Provisioning](docs/img/hld-Provisioning.png)
+
+Refer to the [witboost Starter Kit repository](https://github.com/agile-lab-dev/witboost-starter-kit) for information on the Tech Adapter that can be used to deploy components created with this Template.
 
 
 ### What's a Template
