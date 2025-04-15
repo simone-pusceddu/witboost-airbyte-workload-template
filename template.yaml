@@ -1,8 +1,8 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: snowflake-workload-airbyte-template.1
-  title: Workload Airbyte Template
+  name: snowflake-workload-airbyte-template-skeleton
+  title: Workload Airbyte Template (Skeleton)
   description: Create a repository containing the definition of a Airbyte Workload
   mesh:
     icon: https://marketplace.digitalocean.com/_next/image?url=https%3A%2F%2Fmarketplace-assets.digitalocean.com%2Flogos%2Fairbyte.png&w=3840&q=75
@@ -237,10 +237,7 @@ spec:
           useCaseTemplateId: urn:dmb:utm:airbyte-standard:0.0.0
           infrastructureTemplateId: urn:dmb:itm:airbyte-provisioner:0
           useCaseTemplateVersion: 0.0.0
-          repoUrl: gitlab.com?owner=AgileDMBSandbox%2F${{orgname}}%2Fmesh.repository%2F${{
-            parameters.domain | replace(r/domain:| |-/, "") }}%2F${{
-            parameters.dataproduct.split(".")[1] | replace(r/ |-/g, "")
-            }}&repo=${{ parameters.name.split(" ") | join("") | lower }}
+          repoUrl: gitlab.com?owner=simone.pusceddu&repo=${{ parameters.name.split(" ") | join("") | lower }}
           rootDirectory: .
           displayName: ${{ parameters.displayName }}
     - id: publish
@@ -250,10 +247,7 @@ spec:
         allowedHosts:
           - gitlab.com
         description: This is ${{ parameters.name }}
-        repoUrl: gitlab.com?owner=AgileDMBSandbox%2F${{orgname}}%2Fmesh.repository%2F${{
-          parameters.domain | replace(r/domain:| |-/, "") }}%2F${{
-          parameters.dataproduct.split(".")[1] | replace(r/ |-/g, "")
-          }}&repo=${{ parameters.name.split(" ") | join("") | lower }}
+        repoUrl: gitlab.com?owner=simone.pusceddu&repo=${{ parameters.name.split(" ") | join("") | lower }}
         rootDirectory: .
         dataproduct: ${{ parameters.dataproduct }}
     - id: register
